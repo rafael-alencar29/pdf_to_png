@@ -12,6 +12,7 @@ def find_ext(directory, ext):
 def convert_pdf_to_img(parent_dir, directories):
 
     new_files = []
+    count_img = 0
 
     for file in directories:
         images = []
@@ -22,15 +23,17 @@ def convert_pdf_to_img(parent_dir, directories):
         path = os.path.join(parent_dir, new_file)
         os.mkdir(path)
 
-        images = convert_from_path(file_name)
+        images = convert_from_path(file_name, dpi=200, size=(600, 846))
 
         for i in range(len(images)):
-            # Save pages as images 
+            # Save pages as images
             name = "page"+str(i+1)+".png"
             save_path = os.path.join(path, name)
             #images[i].save(path, 'page' + str(i+1) + '.png', 'PNG')
             images[i].save(save_path, 'PNG')
+            count_img += 1
 
+    print("Total images: ", count_img)
     return new_files
 
 
@@ -44,9 +47,7 @@ directories = find_ext(directory, "pdf")
 # create the new files where the imgs will be stored after conversion
 print(directories)
 
-
 file_imgs = convert_pdf_to_img(directory, directories)
 
 for file in file_imgs:
     print("converted to img: ", file)
-
